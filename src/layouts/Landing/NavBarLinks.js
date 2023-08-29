@@ -16,7 +16,7 @@ const NavBarLinks = () => {
       > Login</Button>
        <Button variant='contained'
       component={Link}
-      to='auth/register'
+      to='/register'
       > SignUp</Button>
     </div>
   )

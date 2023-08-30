@@ -6,6 +6,7 @@ import Login from "./views/Login";
 import SignUp from "./views/SignUp";
 import AdminLogin from "./views/Admin/Auth/AdminLogin";
 import ErrorPage from "./components/ErrorBoundary/components/ErrorPage";
+import Edit from "./views/Edit";
 
 export default function Router() {
     let element = useRoutes([
@@ -17,10 +18,12 @@ export default function Router() {
         path:'auth',
         element: <AuthLayout />, 
         children : [
-            { path: 'login', element: <Login />},
         ]
     },
+    { path: '/login', element: <Login />},
     { path: '/register' , element: <SignUp /> },
+    { path: '/edit/:id' , element: <Edit /> },
+
     {
         path:'/home',
         element: <Home />,

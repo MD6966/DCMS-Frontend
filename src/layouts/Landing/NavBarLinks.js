@@ -6,18 +6,18 @@ import { Outlet } from 'react-router-dom/dist'
 const NavBarLinks = () => {
   return (
     <div>
-      <Button variant='contained'
+       <Button variant='outlined'
+       sx={{color:'#fff', 
+       borderColor:'#fff',
+        '&:hover' : {
+          
+          background:'#fff',
+          color:'#47314E',
+        }
+      }}
       component={Link}
-      to='/home'
-      > Home</Button>
-       <Button variant='contained'
-      component={Link}
-      to='/auth/login'
+      to='/login'
       > Login</Button>
-       <Button variant='contained'
-      component={Link}
-      to='/register'
-      > SignUp</Button>
     </div>
   )
 }

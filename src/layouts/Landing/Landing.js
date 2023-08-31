@@ -1,7 +1,9 @@
 import { AppBar, Toolbar  ,Typography, Box, styled, Table, 
   TableHead, TableCell, TableBody, TableRow,
-IconButton,
+IconButton,InputLabel,Input,InputAdornment,
+TextField,FormControl
 } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search';
 import { makeStyles } from '@mui/styles'
 import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom/dist'
@@ -35,16 +37,33 @@ const Landing = () => {
     const classes = useStyles()
     const [data, setData] = React.useState([])
     const {enqueueSnackbar} = useSnackbar()
+    const [searchInput, setSearchInput] = React.useState("");
+    const [filteredData, setFilteredData] = React.useState(data);
     const navigate = useNavigate()
     const getData = async () => {
       const res = await axios.get(`${process.env.REACT_APP_URL}/users`)
       // console.log(res.data.users)
       setData(res.data.users)
+      setFilteredData(res.data.users);
     }
     React.useEffect(()=> {
       getData()
     }, [])
-
+    const handleChangeSearch = (e) => {
+      const inputValue = e.target.value.toLowerCase();
+    
+      const filtered = data.filter((val) => {
+        return (
+          val.name.toLowerCase().includes(inputValue) ||
+          val.email.toLowerCase().includes(inputValue) ||
+          val.contact.toLowerCase().includes(inputValue) ||
+          val.residence.toLowerCase().includes(inputValue)
+        );
+      });
+    
+      setSearchInput(inputValue);
+      setFilteredData(filtered);
+    };
     const handleEdit = (id) => {
         navigate(`/edit/${id}`)
     }
@@ -82,6 +101,22 @@ const Landing = () => {
     >
       <Nav />
         <StyledRoot>
+        <FormControl
+        sx={{width:'40%', mb:2, float:'right'}}
+        >
+          <InputLabel> Search Users </InputLabel>
+          <Input 
+           value={searchInput}
+           onChange={(e) => handleChangeSearch(e)}
+          endAdornment={
+            <InputAdornment position='end'>
+            <SearchIcon />
+            </InputAdornment>
+          }
+          
+          
+          />
+        </FormControl>
           <Table>
             <StyledHeader>
               <TableRow>
@@ -94,11 +129,17 @@ const Landing = () => {
               </TableRow>
             </StyledHeader>
             <TableBody>
-              {
-                data.map((val,ind)=> {
-                  return(
-              <TableRow>
-                <TableCell>{ind+1}</TableCell>
+    {filteredData.length === 0 ? (
+      <TableRow>
+        <TableCell colSpan={6} align="center">
+          No data found
+        </TableCell>
+      </TableRow>
+    ) : (
+      filteredData.map((val, ind) => {
+        return (
+          <TableRow key={val._id}>
+            <TableCell>{ind+1}</TableCell>
                 <TableCell>{val.name}</TableCell>
                 <TableCell>{val.email}</TableCell>
                 <TableCell>{val.contact}</TableCell>
@@ -123,13 +164,11 @@ const Landing = () => {
               
               </Box>
             </TableCell>
-
-                
-              </TableRow>
-                  )
-                })
-              }
-            </TableBody>
+          </TableRow>
+        );
+      })
+    )}
+  </TableBody>
             </Table> 
         </StyledRoot>
         {/* <Footer />  */}

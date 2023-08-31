@@ -1,14 +1,18 @@
 import { useRoutes } from "react-router-dom/dist";
 import AuthLayout from "./layouts/Auth/AuthLayout";
-import Home from "./layouts/Home";
 import Landing from "./layouts/Landing/Landing";
 import Login from "./views/Login";
 import SignUp from "./views/SignUp";
 import AdminLogin from "./views/Admin/Auth/AdminLogin";
 import ErrorPage from "./components/ErrorBoundary/components/ErrorPage";
 import Edit from "./views/Edit";
+import User from "./layouts/User/User";
+import UserDashboard from './views/User'
+import { useSelector } from "react-redux";
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
 
 export default function Router() {
+    const isAuthenticated = useSelector((state)=>state.user.isAuthenticated)
     let element = useRoutes([
         {
         path:'/',
@@ -23,11 +27,17 @@ export default function Router() {
     { path: '/login', element: <Login />},
     { path: '/register' , element: <SignUp /> },
     { path: '/edit/:id' , element: <Edit /> },
-
     {
-        path:'/home',
-        element: <Home />,
-       },
+        element: <ProtectedRoutes isLogged={isAuthenticated} />,
+        children:[
+            {path:'user', element: <User />,
+            children:[
+                {path:'dashboard', element: <UserDashboard /> }
+            ]
+            },
+        ]
+    },
+   
        {
         path:'/admin-login',
         element: <AdminLogin /> 

@@ -5,7 +5,9 @@ import './App.css'
 import Page from '../components/page/page';
 import Nav from '../components/AppBar/Header'
 import LockIcon from '@mui/icons-material/Lock';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {userLogin} from '../store/actions/userActions'
+import { useSnackbar } from 'notistack';
 const StyledRoot1 = styled(Box)(({theme})=> ({
   padding: theme.spacing(3)
 }))
@@ -24,12 +26,36 @@ const StyledButton = styled(Button)(({theme})=> ({
     color:'#fff'
 }
 }))
+const initialValues = {
+  email:'',
+  password:''
+}
 const Login = () => {
+  const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
+  console.log(isAuthenticated)
+  const [formValues, setFormValues] = React.useState(initialValues)
   const dispatch = useDispatch()
-  const [value, setValue] = useState("")
+  const navigate = useNavigate()
+  const {enqueueSnackbar} = useSnackbar()
   const handleChange =(e) => {
-    setValue(e.target.value)
+    const {name, value} = e.target
+    setFormValues({...formValues, [name]:value})
   }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    dispatch(userLogin(formValues)).then((res)=> {
+      console.log(res)
+    }).catch((err)=> {
+      enqueueSnackbar(err.response.data.errMessage, {
+        variant:'error'
+      })
+    })
+  }
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/user/dashboard', {replace: true});
+    }
+  }, [isAuthenticated]);
   return (<Page
   title="Login"
   >
@@ -71,9 +97,16 @@ const Login = () => {
                 </Typography>
                 Please login.
               </Typography>
-          <form>
-          <TextField fullWidth label='Email' sx={{mb:2}} />
-          <TextField fullWidth label='Password' sx={{mb:1}} />
+          <form
+          onSubmit={handleSubmit}
+          >
+          <TextField fullWidth label='Email' sx={{mb:2}} 
+          name='email' value={formValues.email} onChange={handleChange}
+          type='email'
+          />
+          <TextField fullWidth label='Password' sx={{mb:1}} 
+          name='password' value={formValues.password} onChange={handleChange}
+          />
               <Typography sx={{textAlign:'right', cursor:'pointer'}}>
                 Forgot Password?
               </Typography>
@@ -82,6 +115,7 @@ const Login = () => {
               >
               <Button variant='contained'
               sx={{height:'40px', width:'100px'}}
+              type='submit'
               >
                 Login
               </Button>

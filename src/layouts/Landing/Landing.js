@@ -38,7 +38,7 @@ const Landing = () => {
     const navigate = useNavigate()
     const getData = async () => {
       const res = await axios.get(`${process.env.REACT_APP_URL}/users`)
-      console.log(res.data.users)
+      // console.log(res.data.users)
       setData(res.data.users)
     }
     React.useEffect(()=> {

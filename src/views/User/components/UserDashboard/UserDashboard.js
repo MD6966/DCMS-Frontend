@@ -1,11 +1,15 @@
-import { Avatar, Box, Stack, Typography, styled, Button, Tooltip } from '@mui/material';
+import { Avatar, Box, Stack, Typography, styled, Button, Tooltip, Card, CardHeader } from '@mui/material';
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import Page from '../../components/page/page';
+import Page from '../../../../components/page/page';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const StyledRoot = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(5),
+  paddingLeft: theme.spacing(30),
+  paddingRight: theme.spacing(30),
+  paddingTop: theme.spacing(5),
+  background:'#e2e2e2',
+  minHeight:'100vh'
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -57,7 +61,7 @@ const UserDashboard = () => {
   return (
     <Page title="User Dashboard">
       <StyledRoot>
-        <Typography variant="h4">
+        {/* <Typography variant="h4">
           Hi <strong>{userData.name} !</strong>
         </Typography>
         <StyledBox>
@@ -72,7 +76,6 @@ const UserDashboard = () => {
             </Tooltip>
             
           </Stack>
-          {/* Hidden file input */}
           <input
             type="file"
             accept=".jpg,.jpeg,.png"
@@ -114,8 +117,16 @@ const UserDashboard = () => {
               Update information
             </Button>
             </Stack>
-        </StyledBox2>
+        </StyledBox2> */}
+        <Card sx={{background:'#f7f7f7'}}>
+          <CardHeader title={
+            <Typography>
+              You're now logged in as: <strong>{userData.name}</strong>
+            </Typography>
+          } />
+        </Card>
       </StyledRoot>
+      
     </Page>
   );
 };

@@ -7,7 +7,7 @@ import AdminLogin from "./views/Admin/Auth/AdminLogin";
 import ErrorPage from "./components/ErrorBoundary/components/ErrorPage";
 import Edit from "./views/Edit";
 import User from "./layouts/User/User";
-import UserDashboard from './views/User'
+import UserDashboard from './views/User/components/UserDashboard'
 import { useSelector } from "react-redux";
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
 

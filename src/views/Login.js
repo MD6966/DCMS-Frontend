@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, Button, Box, Grid, Hidden, Typography, TextField, AppBar, Toolbar, styled  } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Button, Box, Grid, Hidden, Typography, TextField, AppBar, Toolbar, styled, Dialog, DialogTitle, DialogContent, DialogActions  } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css'
@@ -8,6 +8,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import { Link, useNavigate } from 'react-router-dom';
 import {userLogin} from '../store/actions/userActions'
 import { useSnackbar } from 'notistack';
+import { RotatingLines } from 'react-loader-spinner'
+import axios from 'axios';
 const StyledRoot1 = styled(Box)(({theme})=> ({
   padding: theme.spacing(3)
 }))
@@ -34,12 +36,36 @@ const Login = () => {
   const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
   console.log(isAuthenticated)
   const [formValues, setFormValues] = React.useState(initialValues)
+  const [isLoading, setLoading] = React.useState(false)
+  const [open, setOpen] = React.useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {enqueueSnackbar} = useSnackbar()
   const handleChange =(e) => {
     const {name, value} = e.target
     setFormValues({...formValues, [name]:value})
+  }
+  const [email, setEmail] = React.useState("")
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value)
+  }
+  const handleSubmitEmail =async (e) => {
+    setLoading(true)
+    e.preventDefault()
+    // console.log(email)
+    try{
+        const res = await axios.post(`${process.env.REACT_APP_URL}/password/forgot`, {email:email})
+        setLoading(false)
+        enqueueSnackbar(res.data.message, {
+          variant:'success'
+        })
+    }
+    catch(err) {
+      setLoading(false)
+      enqueueSnackbar(err.response.data.errMessage, {
+        variant:'error'
+      })
+    }
   }
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -107,7 +133,9 @@ const Login = () => {
           <TextField fullWidth label='Password' sx={{mb:1}} 
           name='password' value={formValues.password} onChange={handleChange}
           />
-              <Typography sx={{textAlign:'right', cursor:'pointer'}}>
+              <Typography sx={{textAlign:'right', cursor:'pointer'}}
+              onClick={()=> setOpen(true)}
+              >
                 Forgot Password?
               </Typography>
               <Box
@@ -161,6 +189,38 @@ const Login = () => {
      </Grid>
       </Box>
        </Box>  
+
+       <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>
+          Reset your password 
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Forgot your password? No problem. Just let us know your email address and we will email you a
+            password reset link that will allow you to choose a new one
+          </Typography>
+          <form onSubmit={handleSubmitEmail}>
+          <TextField type='email' fullWidth sx={{mt:2}} 
+          name="email" value={email} onChange={handleChangeEmail}
+          label="Email"
+          placeholder='john@abc.com'
+          required
+          />
+        <DialogActions>
+        {
+          isLoading ? <Button type='submit' variant='disabled'>    <RotatingLines
+          strokeColor="#312236"
+          strokeWidth="5"
+          animationDuration="0.75"
+          width="30"
+          visible={isLoading}/> </Button> :
+          <Button type='submit'variant='contained'
+          > Email password reset link </Button>
+        }
+        </DialogActions>
+          </form>
+        </DialogContent>
+       </Dialog>
   
        
   

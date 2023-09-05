@@ -25,9 +25,7 @@ const initialValues = {
   name:'',
   email:'',
   password:'',
-  residence:'',
-  contact:'',
-  behavior:''
+  confirm:'',
 }
 const SignUp = () => {
   const classes = useStyles()
@@ -80,14 +78,8 @@ const SignUp = () => {
               <TextField label="Password" fullWidth className={classes.input} required
               name="password" value={formValues.password} onChange={handleChange}
               />
-              <TextField label="Residence" fullWidth className={classes.input}
-              name="residence" value={formValues.residence} onChange={handleChange}
-              />
-              <TextField label="Phone" fullWidth className={classes.input}
-              name="contact" value={formValues.contact} onChange={handleChange}
-              />
-              <TextField label="Behavior" fullWidth className={classes.input}
-              name="behavior" value={formValues.behavior} onChange={handleChange}
+              <TextField label="ConfirmPassword" fullWidth className={classes.input}
+              name="confirm" value={formValues.confirm} onChange={handleChange}
               />
               <Box sx={{display:'flex', justifyContent:'center', mt:2}}>
             <Button variant='contained' 

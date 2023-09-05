@@ -120,7 +120,9 @@ const UserDashboard = () => {
         </StyledBox2> */}
         <Card sx={{background:'#f7f7f7'}}>
           <CardHeader title={
-            <Typography>
+            <Typography
+            
+            >
               You're now logged in as: <strong>{userData.name}</strong>
             </Typography>
           } />

@@ -11,6 +11,7 @@ import UserDashboard from './views/User/components/UserDashboard'
 import { useSelector } from "react-redux";
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
 import Addbehavior from "./views/User/AddBehavior/Addbehavior";
+import ViewProfile from "./views/User/ViewProfile/ViewProfile";
 
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.user.isAuthenticated)
@@ -44,8 +45,12 @@ export default function Router() {
         element: <AdminLogin /> 
        },
        {
-        path:'add-behavior',
+        path:'add-behavior/:id',
         element: <Addbehavior /> 
+       },
+       {
+        path:'view-profile/:id',
+        element: <ViewProfile />
        },
        {
         path:'*',

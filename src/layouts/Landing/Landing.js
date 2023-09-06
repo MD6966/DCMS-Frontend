@@ -93,8 +93,8 @@ const Landing = () => {
     
     };
     const postData = (data) => {
-      console.log(data)
-      navigate('/add-behavior', {state:data})
+      // console.log(data)
+      navigate(`/view-profile/${data._id}`, {state:data})
     }
   return (
     <Page

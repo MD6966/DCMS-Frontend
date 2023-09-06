@@ -1,22 +1,22 @@
-import { Avatar, Box, Stack, Typography, styled, Button, Tooltip, Card, CardHeader } from '@mui/material';
+import { Avatar, Box, Stack, Typography, styled, Button, Tooltip, Card, CardHeader, Divider, CardContent } from '@mui/material';
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import Page from '../../../../components/page/page';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const StyledRoot = styled(Box)(({ theme }) => ({
-  paddingLeft: theme.spacing(30),
-  paddingRight: theme.spacing(30),
-  paddingTop: theme.spacing(5),
   background:'#e2e2e2',
   minHeight:'100vh'
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(5),
-  display: 'flex',
-  justifyContent: 'center',
-  position: 'relative',
+  // padding: theme.spacing(5),
+  // display: 'flex',
+  // justifyContent: 'center',
+  // position: 'relative',
+   paddingLeft: theme.spacing(30),
+  paddingRight: theme.spacing(30),
+  paddingTop: theme.spacing(5),
 }));
 const StyledBox2 = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -118,6 +118,8 @@ const UserDashboard = () => {
             </Button>
             </Stack>
         </StyledBox2> */}
+        <StyledBox>
+
         <Card sx={{background:'#f7f7f7'}}>
           <CardHeader title={
             <Typography
@@ -127,6 +129,52 @@ const UserDashboard = () => {
             </Typography>
           } />
         </Card>
+          </StyledBox>
+          <Box sx={{p:2}}>
+          <Stack direction="row" spacing={2} sx={{mt:3}}>
+            <Box flex={1} sx={{background:'#fff', height:'40vh', p:3}}>
+              This is Box 1
+            </Box>
+            <Box flex={3} sx={{background:'#fff', minHeight:'100vh', p:3}}>
+              <Typography variant='h4'>
+                Your behaviors
+              </Typography>
+              <Divider /> 
+              {
+                userData.behavior.map((val,ind)=> {
+                  return(
+                    <Card sx={{background:'#e2e2e2', mt:2}}>
+                    <CardHeader title={
+                    <Typography>
+                      Name: <strong> {val.firstname}</strong>
+                    </Typography>
+                    }/>
+                    <CardContent>
+                      <Typography>
+                    <strong>Email: </strong> {val.email}
+                      </Typography>
+                      <Typography>
+                    <strong>Location: </strong> {val.location}
+                      </Typography>
+                      <Typography>
+                    <strong>Address: </strong> {val.address}
+                      </Typography>
+                      <Typography>
+                    <strong>Description: </strong> {val.description}
+                      </Typography>
+
+                    </CardContent>
+                  </Card>
+                  )
+                })
+              }
+            
+            </Box>
+            <Box flex={1} sx={{background:'#fff',height:'40vh', p:3}}>
+              This is Box 3
+            </Box>
+          </Stack>
+          </Box>
       </StyledRoot>
       
     </Page>

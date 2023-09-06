@@ -55,9 +55,7 @@ const Landing = () => {
       const filtered = data.filter((val) => {
         return (
           val.name.toLowerCase().includes(inputValue) ||
-          val.email.toLowerCase().includes(inputValue) ||
-          val.contact.toLowerCase().includes(inputValue) ||
-          val.residence.toLowerCase().includes(inputValue)
+          val.email.toLowerCase().includes(inputValue) 
         );
       });
     
@@ -94,7 +92,10 @@ const Landing = () => {
       })
     
     };
-    
+    const postData = (data) => {
+      console.log(data)
+      navigate('/add-behavior', {state:data})
+    }
   return (
     <Page
     title="Welcome To Website"
@@ -117,14 +118,14 @@ const Landing = () => {
           
           />
         </FormControl>
-          <Table>
+          <Table
+          
+          >
             <StyledHeader>
               <TableRow>
               <StyledCell> Sr</StyledCell>
               <StyledCell> Name</StyledCell>
               <StyledCell> Email</StyledCell>
-              <StyledCell> Contact</StyledCell>
-              <StyledCell> Residence</StyledCell>
               <StyledCell> Actions</StyledCell>
               </TableRow>
             </StyledHeader>
@@ -138,15 +139,15 @@ const Landing = () => {
     ) : (
       filteredData.map((val, ind) => {
         return (
-          <TableRow key={val._id}>
+          <TableRow key={val._id}
+          sx={{cursor:'pointer'}}
+          >
             <TableCell>{ind+1}</TableCell>
-                <TableCell>{val.name}</TableCell>
-                <TableCell>{val.email}</TableCell>
-                <TableCell>{val.contact}</TableCell>
-                <TableCell>{val.residence}</TableCell>
+                <TableCell  onClick = {() => postData(val)}>{val.name}</TableCell>
+                <TableCell  onClick = {() => postData(val)}>{val.email}</TableCell>
                 <TableCell>
             <Box
-              sx={{display:'flex', justifyContent:'space-between'}}
+              sx={{display:'flex',}}
               >
                 <IconButton>
                 <EditIcon 
@@ -156,7 +157,7 @@ const Landing = () => {
                 </IconButton>
                 <IconButton>      
                 <DeleteIcon 
-                sx={{color:'#47314E'}}
+                sx={{color:'#47314E',ml:2}}
                 onClick={()=> handleDelete(val._id)}
                 
                 />
